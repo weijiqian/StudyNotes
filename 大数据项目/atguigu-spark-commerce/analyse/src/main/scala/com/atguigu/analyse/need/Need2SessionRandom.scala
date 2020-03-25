@@ -72,7 +72,7 @@ object Need2SessionRandom {
     // 业务功能一：统计各个范围的session占比，并写入MySQL
     calculateAndPersistAggrStat(sparkSession, aggrStatAccumulator.value, taskUUID)
 
-    
+
   }
 
   /**

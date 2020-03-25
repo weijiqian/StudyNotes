@@ -3,7 +3,6 @@ package com.desheng.bigdata.common;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.*;
 
 import java.io.IOException;
 import java.sql.Connection;
