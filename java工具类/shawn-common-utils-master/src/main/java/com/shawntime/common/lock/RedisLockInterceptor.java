@@ -30,7 +30,7 @@ public class RedisLockInterceptor {
 
     private static final ExpressionParser PARSER = new SpelExpressionParser();
 
-    @Pointcut("@annotation(com.shawntime.common.lock.RedisLockable)")
+    @Pointcut("@annotation(com.shawntime.com.atguigu.common.lock.RedisLockable)")
     public void pointcut() {
     }
 

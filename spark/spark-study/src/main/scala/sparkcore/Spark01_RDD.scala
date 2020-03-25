@@ -27,5 +27,7 @@ object Spark01_RDD {
 
     //将RDD的数据保存到文件中
     fileRDD.saveAsTextFile("output") //默认 电脑核数
+
+    sc.stop()
   }
 }

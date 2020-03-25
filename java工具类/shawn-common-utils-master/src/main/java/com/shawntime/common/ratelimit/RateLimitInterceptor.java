@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RateLimitInterceptor extends KeySpELAdviceSupport {
 
-    @Pointcut("@annotation(com.shawntime.common.ratelimit.*)")
+    @Pointcut("@annotation(com.shawntime.com.atguigu.common.ratelimit.*)")
     public void pointcut(){}
 
     @Around("pointcut()")

@@ -18,6 +18,7 @@ object Spark07_groupBy {
 
     /**
       * 按条件分组
+      * 按照函数的返回值来分组
       */
     var groupbyRDD: RDD[(Int, Iterable[Int])] = listRDD.groupBy(i => i % 2)
 

@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>shawn-common-utils</groupId>
+    <groupId>shawn-com.atguigu.common-utils</groupId>
     <artifactId>com.shawntime</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--common libs version-->
+        <!--com.atguigu.common libs version-->
         <spring.base.version>4.2.0.RELEASE</spring.base.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>

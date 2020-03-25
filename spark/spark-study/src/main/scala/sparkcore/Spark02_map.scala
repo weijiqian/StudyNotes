@@ -14,6 +14,6 @@ object Spark02_map {
     val mapRDD:RDD[Int] = listRDD.map(_*2)
     mapRDD.collect().foreach(println)
 
-
+  sc.stop()
   }
 }

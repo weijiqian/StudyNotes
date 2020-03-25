@@ -1,5 +1,5 @@
 
-   [原文地址,侵权删](https://github.com/shawntime/shawn-common-utils)
+   [原文地址,侵权删](https://github.com/shawntime/shawn-com.atguigu.common-utils)
 
 * Spring+Redis实现无缝读写分离插入(com.shawntime.utils.rwdb)
 * Redis操作封装（com.shawntime.utils.cache.redis）

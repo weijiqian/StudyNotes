@@ -21,15 +21,34 @@ object Spark04_mapPartitionsWithIndex {
     //      }
     //    }
 
+    // 可以对不同分区做不同的事,
+    //一个分区 + 100
+    //一个分区  +200
+    val otherRDD: RDD[Int] = listRDD.mapPartitionsWithIndex {
+      case (num, datas) => {
+        if (num == 0) {
+          datas.map(x => x + 100)
+        } else {
+          datas.map(x => x + 200)
+        }
 
+      }
+    }
+    otherRDD.collect().foreach(println)
+    
+    printf("*************************")
+    
     var tupleRDD: RDD[(Int, String)] = listRDD.mapPartitionsWithIndex {
       case (num, datas) => {
         datas.map((_, "分区号：" + num))
       }
     }
+    
 
     tupleRDD.collect().foreach(println)
+    sc.stop()
   }
+
 
 }
 

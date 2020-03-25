@@ -1,0 +1,17 @@
+cluster.name: elasticsearch #集群的名称，同一个集群该值必须设置成相同的
+node.name: es1 #该节点的名字
+node.master: true #该节点有机会成为master节点
+node.data: true #该节点可以存储数据
+network.bind_host: 0.0.0.0 #设置绑定的IP地址，可以是IPV4或者IPV6
+network.publish_host: 192.168.85.133 #设置其他节点与该节点交互的IP地址
+network.host: 192.168.85.133 #该参数用于同时设置bind_host和publish_host
+transport.tcp.port: 9300 #设置节点之间交互的端口号
+transport.tcp.compress: true #设置是否压缩tcp上交互传输的数据
+http.port: 9200 #设置对外服务的http端口号
+http.max_content_length: 100mb #设置http内容的最大大小
+http.enabled: true #是否开启http服务对外提供服务
+discovery.zen.minimum_master_nodes: 2 #设置这个参数来保证集群中的节点可以知道其它N个有master资格的节点。官方推荐（N/2）+1
+discovery.zen.ping_timeout: 120s #设置集群中自动发现其他节点时ping连接的超时时间
+discovery.zen.ping.unicast.hosts: ["192.168.85.133:9300","192.168.85.133:9500","192.168.85.135:9300"] #设置集群中的Master节点的初始列表，可以通过这些节点来自动发现其他新加入集群的节点
+http.cors.enabled: true  #跨域连接相关设置
+http.cors.allow-origin: "*"  #跨域连接相关设置  
