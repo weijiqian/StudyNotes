@@ -25,7 +25,7 @@ object Spark28_Accumulator {
     }).map(_.toInt).reduce(_ + _)
 
     println("sum: " + sum)
-    for (v <- accum.value) print(v + "")
+//    for (v <- accum.value) print(v + "")
     println()
     sc.stop()
   }

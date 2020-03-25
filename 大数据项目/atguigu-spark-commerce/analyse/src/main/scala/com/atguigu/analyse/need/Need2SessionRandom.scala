@@ -5,13 +5,13 @@ import java.util.{Date, UUID}
 import com.atguigu.analyse.utils.{SessionAggrStat, SessionAggrStatAccumulator}
 import com.atguigu.spark.common.conf.ConfigurationManager
 import com.atguigu.spark.common.constant.Constants
-import com.atguigu.spark.common.model.UserVisitAction
+import com.atguigu.spark.common.model.{UserInfo, UserVisitAction}
 import com.atguigu.spark.common.utils._
 import net.sf.json.JSONObject
-import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 import org.apache.spark.storage.StorageLevel
+import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.collection.mutable
 
@@ -400,9 +400,27 @@ object Need2SessionRandom {
 
     }
 
+    // 查询所有用户数据，并映射成<userid,Row>的格式
+    import sparkSession.implicits._
+    val userid2InfoRDD:RDD[(Long,UserInfo)] = sparkSession.sql("select * from user_info").as[UserInfo].rdd.map(item => (item.user_id, item))
 
+    // 将session粒度聚合数据，与用户信息进行join
+    val userid2FullInfoRDD:RDD[(Long,(String,UserInfo))] = userid2PartAggrInfoRDD.join(userid2InfoRDD);
 
+    // 对join起来的数据进行拼接，并且返回<sessionid,fullAggrInfo>格式的数据
+    val sessionid2FullAggrInfoRDD = userid2FullInfoRDD.map { case (uid, (partAggrInfo, userInfo)) =>
+      val sessionid = StringUtils.getFieldFromConcatString(partAggrInfo, "\\|", Constants.FIELD_SESSION_ID)
 
+      val fullAggrInfo = partAggrInfo + "|" +
+        Constants.FIELD_AGE + "=" + userInfo.age + "|" +
+        Constants.FIELD_PROFESSIONAL + "=" + userInfo.professional + "|" +
+        Constants.FIELD_CITY + "=" + userInfo.city + "|" +
+        Constants.FIELD_SEX + "=" + userInfo.sex
+
+      (sessionid, fullAggrInfo)
+    }
+
+    sessionid2FullAggrInfoRDD
 
   }
 
