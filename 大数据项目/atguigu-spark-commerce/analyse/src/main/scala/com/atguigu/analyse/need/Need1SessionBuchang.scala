@@ -20,7 +20,7 @@ import scala.collection.mutable
   * @Date 2020-03-24 14:54
   * @描述 需求一: Session 各范围访问步长、访问时长占比统计
   */
-object Need1SessionBuchang {
+object Need1SessionBuchang{
 
 
 

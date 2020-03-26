@@ -119,5 +119,6 @@ case class Top10Category(taskid:String,
 case class Top10Session(taskid:String,
                         categoryid:Long,
                         sessionid:String,
-                        clickCount:Long)
+                        clickCount:Long) {
+}
 
