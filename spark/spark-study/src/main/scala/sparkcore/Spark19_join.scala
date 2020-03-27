@@ -8,6 +8,7 @@ import org.apache.spark.rdd.RDD
  * @Date:  2020-03-25  20:00
  * @Description: join操作  (K,V)和(K,W)   ===> (K,(V,W))
   *              只返回都有的key 以及值  ,
+  *              leftOuterJoin  保留左边的所有数据,右边没有对应值的为空.
 **/
 object Spark19_join {
   def main(args: Array[String]): Unit = {
@@ -29,6 +30,23 @@ object Spark19_join {
     // (b,(2,b))
     // (c,(3,c))
 
+
+    println("=============leftOuterJoinRDD================")
+    // Option[String]  表示可能不存在
+    val leftOuterJoinRDD: RDD[(String, (Int, Option[String]))] = listRDD.leftOuterJoin(listRDD2)
+    leftOuterJoinRDD.collect().foreach{
+      case (a,(b,c)) =>{
+        println("(" + a + ",(" + b + "," + c + "))")
+      }
+    }
+
+    /** 结果
+      * (d,(4,None))
+      * (x,(10,None))
+      * (a,(1,Some(a)))
+      * (b,(2,Some(b)))
+      * (c,(3,Some(c)))
+      */
     sc.stop()
 
   }
