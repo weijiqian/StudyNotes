@@ -3,10 +3,10 @@ package com.atguigu.analyse.need
 import java.util.{Date, UUID}
 
 import com.atguigu.analyse.utils.{SessionAggrStat, SessionAggrStatAccumulator}
-import com.atguigu.spark.common.conf.ConfigurationManager
-import com.atguigu.spark.common.constant.Constants
-import com.atguigu.spark.common.model.{UserInfo, UserVisitAction}
-import com.atguigu.spark.common.utils._
+import com.atguigu.common.conf.ConfigurationManager
+import com.atguigu.common.constant.Constants
+import com.atguigu.common.model.{UserInfo, UserVisitAction}
+import com.atguigu.common.utils._
 import net.sf.json.JSONObject
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
@@ -29,16 +29,19 @@ object Need1SessionBuchang{
     val jsonStr: String = ConfigurationManager.config.getString(Constants.TASK_PARAMS)
     val taskObject: JSONObject = JSONObject.fromObject(jsonStr)
 
-    //任务的唯一标识,用在mysql中
+    //任务的唯一标识,用在mysql中,区分不同任务
     val taskUUID :String = UUID.randomUUID().toString;
 
-    //构建spark
-    val sparkConf:SparkConf = new SparkConf().setAppName("session").setMaster("local[*]")
+    //构建spark  .config("spark.sql.warehouse.dir","hdfs://mycluster/user/hive/warehouse")  设置数据源
+    val sparkConf:SparkConf = new SparkConf().setAppName("session").setMaster("local[*]").set("spark.sql.warehouse.dir","spark_warehouse")
     val sparkSession: SparkSession = SparkSession.builder().config(sparkConf).enableHiveSupport().getOrCreate()
     val sparkContext: SparkContext = sparkSession.sparkContext
 
     //查询出指定时间范围内的数据
     val actionRDD: RDD[UserVisitAction] = this.getActionRDDByDateRange(sparkSession,taskObject)
+
+    actionRDD.foreach(println(_))
+
 
     //把数据转换为(k,v)结构
     val sessionId2ActionRDD: RDD[(String, UserVisitAction)] = actionRDD.map(item => (item.session_id,item))
@@ -69,6 +72,8 @@ object Need1SessionBuchang{
     //缓存数据 TODO  什么时候要缓存数据
     sessionid2detailRDD.persist(StorageLevel.MEMORY_AND_DISK)
 
+    //执行action
+    sessionid2detailRDD.collect()
     // 业务功能一：统计各个范围的session占比，并写入MySQL
     calculateAndPersistAggrStat(sparkSession, aggrStatAccumulator.value, taskUUID)
 
@@ -134,6 +139,8 @@ object Need1SessionBuchang{
 
     import sparkSession.implicits._
     val sessionAggrStatRDD = sparkSession.sparkContext.makeRDD(Array(sessionAggrStat))
+
+   //保存到数据库,如果没有表,将自动创建表
     sessionAggrStatRDD.toDF().write
       .format("jdbc")
       .option("url", ConfigurationManager.config.getString(Constants.JDBC_URL))

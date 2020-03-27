@@ -2,7 +2,7 @@
  * Copyright (c) 2018. Atguigu Inc. All Rights Reserved.
  */
 
-package com.atguigu.spark.common.model
+package com.atguigu.common.model
 
 //***************** 输入表 *********************
 

@@ -1,8 +1,8 @@
-package com.atguigu.spark.common.conf
-import org.apache.commons.configuration.PropertiesConfiguration
-import org.apache.commons.configuration2.FileBasedConfiguration
+package com.atguigu.common.conf
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder
 import org.apache.commons.configuration2.builder.fluent.Parameters
+import org.apache.commons.configuration2.{FileBasedConfiguration, PropertiesConfiguration}
+
 
 
 /**

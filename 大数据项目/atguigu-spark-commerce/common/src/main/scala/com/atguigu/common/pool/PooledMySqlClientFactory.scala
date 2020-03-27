@@ -2,14 +2,13 @@
  * Copyright (c) 2018. Atguigu Inc. All Rights Reserved.
  */
 
-package com.atguigu.spark.common.pool
+package com.atguigu.common.pool
 
 import java.sql.{Connection, DriverManager, PreparedStatement, ResultSet}
 
-import com.atguigu.spark.common.conf.ConfigurationManager
-import com.atguigu.spark.common.constant.Constants
-import org.apache.commons.pool.impl.GenericObjectPool
-import org.apache.commons.pool2.impl.{DefaultPooledObject, GenericObjectPoolConfig}
+import com.atguigu.common.conf.ConfigurationManager
+import com.atguigu.common.constant.Constants
+import org.apache.commons.pool2.impl.{DefaultPooledObject, GenericObjectPool, GenericObjectPoolConfig}
 import org.apache.commons.pool2.{BasePooledObjectFactory, PooledObject}
 
 // 创建用于处理MySQL查询结果的类的抽象接口
@@ -28,7 +27,7 @@ trait QueryCallback {
 case class MySqlProxy(jdbcUrl: String, jdbcUser: String, jdbcPassword: String, client: Option[Connection] = None) {
 
   // 获取客户端连接对象
-  private val mysqlClient = client getOrElse {
+  private val mysqlClient: Connection = client getOrElse {
     DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword)
   }
 

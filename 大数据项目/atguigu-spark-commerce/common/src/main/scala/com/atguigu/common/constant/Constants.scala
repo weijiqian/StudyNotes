@@ -2,7 +2,7 @@
  * Copyright (c) 2018. Atguigu Inc. All Rights Reserved.
  */
 
-package com.atguigu.spark.common.constant
+package com.atguigu.common.constant
 
 /**
  * 常量接口

@@ -2,7 +2,7 @@
  * Copyright (c) 2018. Atguigu Inc. All Rights Reserved.
  */
 
-package com.atguigu.spark.common.utils
+package com.atguigu.common.utils
 
 import java.util.Date
 

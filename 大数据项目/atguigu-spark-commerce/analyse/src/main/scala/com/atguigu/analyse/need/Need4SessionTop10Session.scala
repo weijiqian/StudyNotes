@@ -3,10 +3,10 @@ package com.atguigu.analyse.need
 import java.util.{Date, UUID}
 
 import com.atguigu.analyse.utils._
-import com.atguigu.spark.common.conf.ConfigurationManager
-import com.atguigu.spark.common.constant.Constants
-import com.atguigu.spark.common.model.{UserInfo, UserVisitAction}
-import com.atguigu.spark.common.utils._
+import com.atguigu.common.conf.ConfigurationManager
+import com.atguigu.common.constant.Constants
+import com.atguigu.common.model.{UserInfo, UserVisitAction}
+import com.atguigu.common.utils._
 import net.sf.json.JSONObject
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}

@@ -122,3 +122,5 @@ case class Top10Session(taskid:String,
                         clickCount:Long) {
 }
 
+case class PageSplitConvertRate(taskid: String, convertRate: String)
+

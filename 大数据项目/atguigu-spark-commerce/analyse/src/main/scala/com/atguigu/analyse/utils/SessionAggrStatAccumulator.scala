@@ -40,11 +40,17 @@ class SessionAggrStatAccumulator  extends AccumulatorV2[String, mutable.HashMap[
     aggrStatMap.update(key,aggrStatMap(key)+1)
   }
 
-  //TODO 这里看不懂
+  //把两个map中的数据,相同的key  值进行累加
   override def merge(other: AccumulatorV2[String, mutable.HashMap[String, Int]]): Unit = {
     other match {
+        //首先判断是自己的这个累加器
       case acc:SessionAggrStatAccumulator => {
-        (this.aggrStatMap /: acc.value){ case (map, (k,v)) => map += ( k -> (v + map.getOrElse(k, 0)) )}
+        acc.aggrStatMap.foldLeft(this.aggrStatMap){
+          case (map,(k,v)) =>
+            map += (k ->(map.getOrElse(k,0) + v))
+        }
+
+//        (this.aggrStatMap /: acc.value){ case (map, (k,v)) => map += ( k -> (v + map.getOrElse(k, 0)) )}
       }
     }
   }
