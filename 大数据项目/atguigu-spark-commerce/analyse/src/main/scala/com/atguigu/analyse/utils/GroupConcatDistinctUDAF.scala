@@ -7,11 +7,21 @@ import org.apache.spark.sql.types.{DataType, StringType, StructField, StructType
   * @Auther Tom
   * @Date 2020-03-27 21:13
   * @描述 用户自定义聚合函数
+  *     功能  :  把输入的数据去重,并且拼接起来
+  *     输入数据:  1:北京
+  *     2:上海
+  *     2:上海
+  *     2:上海
+  *     1:北京
+  *     输出数据:1:北京,2:上海
+  *
+  *     //解读 group_concat_distinct : 因为是按照area和product_id分组,
+  *     // 所以会出现这样的数据,华东 组里面有多条上海的记录, 电脑组里面也有多条记录.
+  *     // 因此,就要城市去重处理
   */
-class GroupConcatDistinctUDAF {
+class GroupConcatDistinctUDAF extends UserDefinedAggregateFunction {
 
-  class GroupConcatDistinctUDAF extends UserDefinedAggregateFunction {
-
+  //输入数据 1:北京
     override def inputSchema: StructType = StructType(StructField("cityInfo", StringType) :: Nil)
 
     override def bufferSchema: StructType = StructType(StructField("bufferCityInfo", StringType) :: Nil)
@@ -71,6 +81,6 @@ class GroupConcatDistinctUDAF {
       buffer.getString(0)
     }
 
-  }
+
 }
 

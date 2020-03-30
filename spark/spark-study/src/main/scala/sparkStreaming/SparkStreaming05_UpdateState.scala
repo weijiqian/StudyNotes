@@ -28,10 +28,26 @@ object SparkStreaming05_UpdateState {
     /**
       * 无状态 :  只计算当前批次的数据
       * 有状态 :  统计所有数据
+      * updateStateByKey  把这一批次key为a的值value和以前的同一个key为a的value聚合在一起
       */
     var stateDStream: DStream[(String, Int)] = resultDS.updateStateByKey {
-      case (seq, buffer) => {
-        var sum = buffer.getOrElse(0) + seq.sum
+      //在这个方法里面,不涉及到key,都是value的转换
+      //因为都是针对同一个key的不同value做操作
+      //这一个批次里面有N条数据.values就是一个集合.  而原来的key是聚合后的,要么有一个值,要么没有值.
+      case (values:Seq[Int], old:Option[Int]) => {
+        // 如果说，之前是存在这个状态的，那么就以之前的状态作为起点，进行值的累加
+        var sum :Int = 0
+        //获取原来的值
+        if(old.isDefined) {
+          sum = old.get
+        }
+
+        // values，代表了一个批次中，这一个key对应的所有的值
+        for(value <- values) {
+          sum += value
+        }
+
+        //只需要返回value就行
         Option(sum)
       }
     }

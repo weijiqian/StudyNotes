@@ -42,9 +42,7 @@ object Utiles {
   def getDate(s: Int): String = {
     val cal = Calendar.getInstance()
     val sdf = new SimpleDateFormat(
-    “ yyyy - MM - dd HH: mm
-    : ss
-    ”)
+    “ yyyy - MM - dd HH: mm: ss”)
     cal.add(Calendar.DATE, s)
     val day = sdf.format(cal.getTimeInMillis)
     day
@@ -59,57 +57,21 @@ object Utiles {
     SparkSession.builder()
       .appName(Constants.SPARK_NAME)
       .master(Constants.SPARK_MODE)
-      .config(
-    “ spark.sql.warehouse.dir
-    ”, “ / spark -warehouse /
-    ”)
-    .config(
-    “ spark.worker.ui.retainedExecutors
-    ”, “ 200
-    ”) //减少保存在Worker内存中的Driver,Executor信息
-    .config(
-    “ spark.worker.ui.retainedDrivers
-    ”, “ 200
-    ”)
-    .config(
-    “ spark.serializer
-    ”, “ org.apache.spark.serializer.KryoSerializer
-    ”)
-    // .config(“spark.kryoserializer.buffer”, “1024m”)
-    // .config(“spark.kryoserializer.buffer.max”, “2046m”)
-    .config(
-    “ spark.io.compression.codec
-    ”, “ snappy
-    ”)
-    .config(
-    “ spark.sql.parquet.binaryAsString
-    ”, “ true
-    ”)
-    .config(
-    “ spark.sql.crossJoin.enabled
-    ”, “ true
-    ”)
-    .config(
-    “ spark.sql.codegen
-    ”, “ true
-    ”)
-    .config(
-    “ spark.sql.unsafe.enabled
-    ”, “ true
-    ”)
-    // .config(“spark.sql.shuffle.partitions”,“200”) //多表查询(比如多表join)，涉及到shuffle的操作会开启200个task来处理数据,由参数控制，可以人为得调大调小
-    .config(
-    “ spark.shuffle.manager
-    ”, “ tungsten - sort
-    ”)
-    .config(
-    “ spark.network.timeout
-    ”, “ 600
-    ”)
-    .config(
-    “ spark.testing.memory
-    ”, “ 471859200
-    ”)
+      .config("spark.sql.warehouse.dir", "/ spark -warehouse /”)
+    .config("spark.worker.ui.retainedExecutors”, “ 200”) //减少保存在Worker内存中的Driver,Executor信息
+    .config("spark.worker.ui.retainedDrivers”, “ 200”)
+    .config("spark.serializer”, “org.apache.spark.serializer.KryoSerializer”)
+    .config("spark.kryoserializer.buffer”, “1024m”)
+    .config("spark.kryoserializer.buffer.max”, “2046m”)
+    .config("spark.io.compression.codec”, “ snappy”)
+    .config("spark.sql.parquet.binaryAsString”, “ true”)
+    .config("spark.sql.crossJoin.enabled”, “ true”)
+    .config("spark.sql.codegen”, “ true”)
+    .config("spark.sql.unsafe.enabled”, “ true”)
+    .config(“spark.sql.shuffle.partitions”,“200”) //多表查询(比如多表join)，涉及到shuffle的操作会开启200个task来处理数据,由参数控制，可以人为得调大调小
+    .config("spark.shuffle.manager”, “ tungsten - sort”)
+    .config("spark.network.timeout”, “ 600”)
+    .config("spark.testing.memory”, “ 471859200”)
     .getOrCreate()
 
   }

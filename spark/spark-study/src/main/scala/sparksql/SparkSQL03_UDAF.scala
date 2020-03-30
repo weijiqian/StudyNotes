@@ -9,7 +9,7 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 /**
   * @Auther Tom
   * @Date 2020-03-17 17:04
-  *  自定义函数 -- 入门版
+  *  自定义函数 -- 入门版  用户自定义聚合函数。
   */
 
 object SparkSQL03_UDAF {

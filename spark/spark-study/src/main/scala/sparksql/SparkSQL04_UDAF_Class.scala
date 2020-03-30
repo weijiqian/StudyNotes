@@ -8,7 +8,7 @@ import org.apache.spark.sql.expressions.Aggregator
 /**
   * @Auther Tom
   * @Date 2020-03-17 19:39
-  * 自定义函数--高级版
+  * 自定义函数--高级版  用户自定义聚合函数。
   */
 
 object SparkSQL04_UDAF_Class {

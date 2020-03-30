@@ -2,13 +2,11 @@ package com.atguigu.analyse.need
 
 import java.util.UUID
 
-import com.atguigu.analyse.utils.AreaTop3Product
+import com.atguigu.analyse.utils.{AreaTop3Product, GroupConcatDistinctUDAF}
 import com.atguigu.common.conf.ConfigurationManager
 import com.atguigu.common.constant.Constants
 import com.atguigu.common.utils.ParamUtils
 import net.sf.json.JSONObject
-import org.apache
-import org.apache.spark
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row, SaveMode, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
@@ -162,6 +160,10 @@ object Need6AreaTop3 {
     // 按照area和product_id两个字段进行分组
     // 计算出各区域各商品的点击次数
     // 可以获取到每个area下的每个product_id的城市信息拼接起来的串
+
+    //解读 group_concat_distinct : 因为是按照area和product_id分组,
+    // 所以会出现这样的数据,华东 组里面有多条上海的记录, 电脑组里面也有多条记录.
+    //因此,就要城市去重处理
     val sql = "SELECT " +
       "area," +
       "product_id," +
