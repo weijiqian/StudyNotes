@@ -11,27 +11,29 @@
 2. 查看topic列表：
 
    ```
-    bin/kafka-topics.sh --zookeeper localhost:2181 --list
+    bin/kafka-topics.sh --zookeeper hadoop1:2181,hadoop2:2181,hadoop3:2181 --list
    ```
 
 3. 新建topic
 
    ```
-    ./bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_kafka
+   bin/kafka-topics.sh --create --zookeeper hadoop1:2181,hadoop2:2181,hadoop3:2181 --replication-factor 2 --partitions 2 --topic test_kafka
    
    ```
 
 4. 查看某一topic的详细信息
 
    ```
-    bin/kafka-topics.sh --zookeeper localhost:2181 --describe --topic test
+    bin/kafka-topics.sh --zookeeper hadoop1:2181,hadoop2:2181,hadoop3:2181 --describe --topic test
    
    ```
 
 5. 删除topic
 
+   需要配置  delete.topic.enable=true
+
    ```
-    bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic test
+    bin/kafka-topics.sh --zookeeper hadoop1:2181,hadoop2:2181,hadoop3:2181 --delete --topic test
    
    ```
 
@@ -45,7 +47,7 @@
 7. 启动consumer
 
    ```
-    bin/kafka-console-consumer.sh --bootstrap-server ip:9092 --topic test --from-beginning
+    bin/kafka-console-consumer.sh --bootstrap-server hadoop1:9092,hadoop2:9092,hadoop3:9092 --topic topic-start --from-beginning
     集群就写多个ip+端口，用逗号分开。
     ip1:9092,ip2:9092,ip3:9092 
    

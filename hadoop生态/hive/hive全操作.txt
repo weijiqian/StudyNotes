@@ -1,0 +1,262 @@
+1、建库
+
+	create database mydb;
+	create database if no exists mydb;
+	create database if no exists mydb location "/aa/bb";
+
+2、查询数据库
+	
+	查询库列表：show databases;
+	查询库详细信息：desc database [extended] mydb;
+	查询建库的详细信息：show create database mydb;
+
+3、删除数据库
+
+	drop database mydb;
+	drop database if exists mydb;
+	drop database if exists mydb [restrict|cascade];
+
+4、先进入我们要操作的数据库/切换库
+
+	use mydb;
+
+5、查看数据库里面的表
+
+	show tables;
+	show tables in mydb;
+
+6、添加表
+
+	创建内部表（Managered_Table）
+	create table mingxing_mng(id int, name string, sex string, age int, department string) row format delimited fields terminated by ',';
+
+	show create table mingxing;
+
+	创建外部表（External_Table）
+	create external table mingxing_ext(id int, name string, sex string, age int, department string) row format delimited fields terminated by ',' location '/home/hadoop/hivedata';
+	注意：创建外部表的时候指定location的位置必须是目录，不能是单个文件
+	      也可以不指定目录，如果不指定目录，依然存储在Hive中的默认仓库路径，但是推荐指定
+
+	跟内部表对比：
+	1、在创建表的时候指定关键字： external
+	2、一般来说，创建外部表，都需要指定一个外部路径
+
+	不管是创建外部表还是内部表，都可以指定数据存储目录
+	默认的目录：
+	hdfs://hadoop02:9000/user/hive/warehouse/myhive.db/student/student.txt
+
+	创建分区表
+	create table mingxing_ptn(id int, name string, sex string, age int, department string) partitioned by (city string) row format delimited fields terminated by ',';
+	注意：partitioned里的字段不是能是表中声明的字段,，必须是一个新字段
+	表字段
+	分区字段
+
+	创建分桶表
+	create table mingxing_bck(id int, name string, sex string, age int, department string) clustered by(id) sorted by(age desc) into 4 buckets row format delimited fields terminated by ',';
+	注意：clustered里的字段必须要是表字段中出现的字段
+	分桶字段
+	表字段
+	分桶字段和排序字段可以不一样，分桶字段和排序字段都必须是表字段中的一部分
+	分桶的原理和MapReduce的HashPartitioner的原理一致
+
+7、删除表
+
+	drop table mingxing;
+	drop table if exists mingxing;
+
+8、对表进行重命名
+
+	alter table mingxing rename to student;
+
+9、对表的字段进行操作（增加add，删除drop，修改change，替换replace）
+
+	增加字段：
+	alter table mingxing add columns (province string);
+	alter table mingxing add columns (province string, salary bigint);
+
+	删除字段：
+	drop（不支持） XXXXX
+
+	修改字段：
+	alter table mingxing change age newage string;				// 修改字段的定义
+	alter table mingxing change age newage string after id;		// 修改字段的定义 + 顺序
+	alter table mingxing change age newage string first;			// 修改age字段为第一个字段
+
+	替换字段
+	alter table mingxing replace columns(id int, name string, sex string);		// 替换所有字段
+
+10、对表中的分区进行操作
+	
+	增加分区：
+	alter table mingxing_ptn add partition(city='beijing');
+	alter table mingxing_ptn add partition(city='beijing') partition(city='tianjin');
+
+	alter table mingxing_ptn add partition(city='beijing', email="abc@163.com");
+	alter table mingxing_ptn add partition(city='beijing', email="abc@163.com") partition(city='tianjin', email="cba@163.com");
+
+	删除分区：
+	alter table mingxing_ptn drop partition(city='beijing');
+	alter table mingxing_ptn drop partition(city='beijing'), partition(city='tianjin');
+
+	alter table mingxing_ptn add partition(city='beijing', email="abc@163.com");
+	alter table mingxing_ptn add partition(city='beijing', email="abc@163.com"), partition(city='tianjin', email="cba@163.com");
+
+	修改分区路径：
+	alter table mingxing_ptn partition(city="beijing") set location "/mingxing_beijing";
+
+11、查询显示命令
+
+	查看库：show databases;
+	查看表：show tables;
+	查看建表完整语法：show create table mingxing_mng;
+	查看内置函数库：show functions;
+	查看函数的详细手册：desc function extended concat;
+	查看分区：show partitions mingxing_ptn;
+	查看表的字段：desc mingxing_mng;
+	查看表的详细信息：desc extended mingxing_mng;
+	查看表的格式化了之后的详细信息：desc formatted mingxing_mng;
+
+12、load方式导入数据
+
+	导入本地相对路径的数据
+	load data local inpath './student.txt' into table mingxing;
+	load data local inpath './student.txt' overwrite into table mingxing;
+	(覆盖导入)
+
+	导入本地绝对路径数据：
+	load data local inpath '/home/hadoop/hivedata/student.txt' into table mingxing;
+
+	导入HDFS上的简便路径数据：
+	load data inpath '/home/hadoop/hivedata/student.txt' into table mingxing;
+
+	导入HDFS上的全路径模式下的数据：
+	load data inpath 'hdfs://hadoop01:9000/home/hadoop/hivedata/student.txt' into table mingxing;
+
+	导入本地数据和导入HDFS上的数据的区别：
+	1、导入HDFS上的数据到hive表，表示截切，移动
+	2、导入本地数据，相当于复制或者上传
+
+13、利用insert关键字往表中插入数据
+
+	单条数据插入：
+	insert into table mingxing values(001,'huangbo','male',50,'MA');
+
+	单重插入模式： insert ... select ....
+	insert into table student select id,name,sex,age,department from mingxing;
+	注意：查询出的字段必须是student表中存在的字段
+
+	多重插入模式：
+	from mingxing
+	insert into table student1 select id,name,sex,age
+	insert into table student2 select id,department;
+
+	from mingxing2
+	insert into table student1 partition(department='MA') select id,name,sex ,age where department='MA'
+	insert into table student1 partition(department='CS') select id,name,sex ,age where department='CS'; 
+
+	静态分区插入：
+	需要手动的创建分区
+	alter table student add partition (city="zhengzhou")
+	load data local inpath '/root/hivedata/student.txt' into table student partition(city='zhengzhou');
+
+	动态分区插入： 
+	打开动态分区的开关：set hive.exec.dynamic.partition = true;
+	设置动态分区插入模式：set hive.exec.dynamic.partition.mode = nonstrict
+
+	create table student(name string, department string) partitioned by (id int) .....
+	insert into table student partition(id) select name,department,id from mingxing2;
+	student表字段：name,department， 分区字段是id
+	查询字段是：name,department,id，分区字段
+	注意：动态分区插入的分区字段必须是查询语句当中出现的字段中的最后一个
+
+	CTAS(create table ... as select ...)(直接把查询出来的结果存储到新建的一张表里)
+	create table student as select id,name,age,department from mingxing;
+	注意：自动新建的表中的字段和查询语句出现的字段的名称，类型，注释一模一样
+
+	限制：
+	1、不能创建外部表
+	2、不能创建分区表
+	3、不能创建分桶表
+
+	分桶插入：
+
+	创建分桶表：
+	create table mingxing(id int, name string, sex string, age int, department string)
+	clustered by(id) sorted by(age desc) into 4 buckets
+	row format delimited fields terminated by ',';
+
+	插入数据：
+	insert into table mingxing select id,name,sex,age,department from mingxing2
+	distribute by id sort by age desc;
+	注意：查询语句中的分桶信息必须和分桶表中的信息一致
+
+14、like关键字使用：复制表结构
+
+	create table student like mingxing;
+
+15、利用insert导出数据到本地或者hdfs
+
+	单模式导出数据到本地：
+	insert overwrite local directory '/root/outputdata' select id,name,sex,age,department from mingxing;
+
+	多模式导出数据到本地：
+	from mingxing
+	insert overwrite local directory '/root/outputdata1' select id, name
+	insert overwrite local directory '/root/outputdata2' select id, name,age
+
+	简便路径模式导出到hdfs：
+	insert overwrite directory '/root/outputdata' select id,name,sex,age,department from mingxing;
+
+	全路径模式查询数据到hdfs：
+	insert overwrite directory 'hdfs://hadoop01:9000/root/outputdata1' select id,name,sex,age,department from mingxing;
+
+	local ：导出到本地目录
+	overwrite ：表示覆盖
+
+16、清空数据库表中的数据
+
+	truncate table mingxing2;
+
+17、select查询
+
+	order by : 全局排序
+	如果一个HQL语句当中设置了order by，那么最终在HQL语句执行过程中设置的
+	set mapreduce.job.reduces = 4 不起作用。！！
+
+	sort by ：局部排序
+	一般来说，要搭配 分桶操作使用
+	distribute by id sort by age desc;
+	
+	distribute by : 纯粹就是分桶
+	在使用distribute by的时候：要设置reduceTask的个数
+
+	cluster by ： 既分桶，也排序
+	cluster by age = distribute by age sort by age;
+	distribute by age sort by age,id != cluster by age sort by id
+	
+	cluster by 和 sort by 不能同时使用
+
+
+18、join查询
+
+	限制:
+		支持 等值连接， 不支持 非等值连接
+		支持 and 操作， 不支持 or
+		支持超过2个表的连接
+
+	经验：
+		当出现多个表进行连接时，最好把小表放置在前面！！ 把大表放置在最后
+
+	
+	join分类；
+		
+		inner join
+		left outer join
+		right outer join
+		full outer join
+		left semi join
+			它是in、exists的高效实现
+		
+		select a.* from a left semi join b on a.id = b.id
+		等价于：
+		select a.* from a where a.id in (select b.id from b);

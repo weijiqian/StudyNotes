@@ -1,0 +1,194 @@
+数据
+jack,2015-01-01,10
+tony,2015-01-02,15
+jack,2015-02-03,23
+tony,2015-01-04,29
+jack,2015-01-05,46
+jack,2015-04-06,42
+tony,2015-01-07,50
+jack,2015-01-08,55
+mart,2015-04-08,62
+mart,2015-04-09,68
+neil,2015-05-10,12
+mart,2015-04-11,75
+neil,2015-06-12,80
+mart,2015-04-13,94
+
+hive中建表关联数据：
+create table t_window(
+name string,
+datetime string,
+salecount int
+) 
+row format delimited fields terminated by ',';
+
+加载数据
+load data local inpath '/home/hadoop/sales' 
+into table t_window;
+
+窗口函数：
+1）聚合函数+over
+
+
+select name,count(*) over ()
+from t_window
+where substring(datetime,1,7) = '2015-04';
+统计结果：
+mart    5
+mart    5
+mart    5
+mart    5
+jack    5
+
+上面统计了2015-4月份总的所有用户的总购买次数  以及都是谁购买了
+从结果可以看出mart买了4次 jack买了1次
+
+对上面的结果去重，可以如下：
+select distinct name,count(*) over () 
+from t_window 
+where substring(datetime,1,7) = '2015-04';
+结果：
+jack    5
+mart    5
+
+
+如果想看几个人购买了，这时候可以有以下做法：
+select name,count(*) over ()
+from t_window
+where substring(datetime,1,7) = '2015-04'
+group by name;
+结果：
+mart    2
+jack    2
+
+over子句中使用partition by子句
+Over子句之后第一个提到的就是Partition By.Partition By子句也可以称为查询分区子句，非常类似于Group By，都是将数据按照边界值分组，而Over之前的函数在每一个分组之内进行，如果超出了分组，则函数会重新计算.
+
+我们想要去看顾客的购买明细及月购买总额,可以执行如下的sql
+select name,datetime,salecount,sum(salecount) over(partition by month(datetime))
+from t_window;
+
+结果：
+jack    2015-01-01      10      205
+jack    2015-01-08      55      205
+tony    2015-01-07      50      205
+jack    2015-01-05      46      205
+tony    2015-01-04      29      205
+tony    2015-01-02      15      205
+jack    2015-02-03      23      23
+mart    2015-04-13      94      341
+jack    2015-04-06      42      341
+mart    2015-04-11      75      341
+mart    2015-04-09      68      341
+mart    2015-04-08      62      341
+neil    2015-05-10      12      12
+neil    2015-06-12      80      80
+
+
+over子句中使用order by子句
+order by子句会让输入的数据强制排序（文章前面提到过，窗口函数是SQL语句最后执行的函数，因此可以把SQL结果集想象成输入数据）。Order By子句对于诸如Row_Number()，Lead()，LAG()等函数是必须的，因为如果数据无序，这些函数的结果就没有任何意义。因此如果有了Order By子句，则Count()，Min()等计算出来的结果就没有任何意义。
+
+select name,datetime,salecount,sum(salecount) over(partition by month(datetime) order by datetime )
+from t_window;
+结果：
+jack    2015-01-01      10      10
+tony    2015-01-02      15      25
+tony    2015-01-04      29      54
+jack    2015-01-05      46      100
+tony    2015-01-07      50      150
+jack    2015-01-08      55      205
+jack    2015-02-03      23      23
+jack    2015-04-06      42      42
+mart    2015-04-08      62      104
+mart    2015-04-09      68      172
+mart    2015-04-11      75      247
+mart    2015-04-13      94      341
+neil    2015-05-10      12      12
+neil    2015-06-12      80      80
+
+select name,datetime,salecount,sum(salecount) over(partition by name order by datetime )
+from t_window;
+结果：
+jack    2015-01-01      10      10
+jack    2015-01-05      46      56
+jack    2015-01-08      55      111
+jack    2015-02-03      23      134
+jack    2015-04-06      42      176
+mart    2015-04-08      62      62
+mart    2015-04-09      68      130
+mart    2015-04-11      75      205
+mart    2015-04-13      94      299
+neil    2015-05-10      12      12
+neil    2015-06-12      80      92
+tony    2015-01-02      15      15
+tony    2015-01-04      29      44
+tony    2015-01-07      50      94
+
+会统计每一组中从起始开始到当前行的累加和
+
+
+总结：
+- 如果只使用partition by子句,未指定order by的话,我们的聚合是分组内的聚合. 
+- 使用了order by子句,未使用window子句的情况下,默认从起点到当前行.
+
+window子句
+window子句： 
+- PRECEDING：往前 
+- FOLLOWING：往后 
+- CURRENT ROW：当前行 
+- UNBOUNDED：起点，UNBOUNDED PRECEDING 表示从前面的起点， UNBOUNDED FOLLOWING：表示到后面的终点
+
+我们按照name进行分区,按照购物时间进行排序,做 salecount的累加. 
+select name,datetime,salecount,
+sum(salecount) over() as sample1,
+sum(salecount) over(partition by name) as sample2,
+sum(salecount) over(partition by name order by datetime) as sample3,
+sum(salecount) over(partition by name order by datetime rows between UNBOUNDED PRECEDING and current row )  as sample4 ,
+sum(salecount) over(partition by name order by datetime rows between 1 PRECEDING   and current row) as sample5, 
+sum(salecount) over(partition by name order by datetime rows between 1 PRECEDING   AND 1 FOLLOWING  ) as sample6,
+sum(salecount) over(partition by name order by datetime rows between current row and UNBOUNDED FOLLOWING ) as sample7 
+from t_window;
+
+结果：
+name	datetime	salecount	全局	组内求和 组内累加和	组内累加和 前一行到本行和 前一行到后一行累加和 本行到末尾行累加和
+jack    2015-01-01      10      661     176     10      10      10      56      176
+jack    2015-01-05      46      661     176     56      56      56      111     166
+jack    2015-01-08      55      661     176     111     111     101     124     120
+jack    2015-02-03      23      661     176     134     134     78      120     65
+jack    2015-04-06      42      661     176     176     176     65      65      42
+mart    2015-04-08      62      661     299     62      62      62      130     299
+mart    2015-04-09      68      661     299     130     130     130     205     237
+mart    2015-04-11      75      661     299     205     205     143     237     169
+mart    2015-04-13      94      661     299     299     299     169     169     94
+neil    2015-05-10      12      661     92      12      12      12      92      92
+neil    2015-06-12      80      661     92      92      92      92      92      80
+tony    2015-01-02      15      661     94      15      15      15      44      94
+tony    2015-01-04      29      661     94      44      44      44      94      79
+tony    2015-01-07      50      661     94      94      94      79      79      50
+
+窗口函数中的序列函数
+row_number、rank、dense_rank
+
+LAG和LEAD函数
+这两个函数为常用的窗口函数,可以返回上下数据行的数据. 
+以我们的订单表为例,假如我们想要查看顾客上次的购买时间可以这样去查询
+
+select name,datetime,salecount,
+lag(datetime,1,'1900-01-01') over(partition by name order by datetime ) as time1,
+lag(datetime,2) over (partition by name order by datetime) as time2
+from t_window;
+
+
+first_value和last_value
+first_value取分组内排序后，截止到当前行，第一个值 
+last_value取分组内排序后，截止到当前行，最后一个值
+
+select name,datetime,salecount,
+first_value(datetime) over(partition by name order by datetime) as time1,
+last_value(datetime) over(partition by name order by datetime) as time2
+from t_window;
+
+
+
+
+

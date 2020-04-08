@@ -1,3 +1,6 @@
+
+/usr/local/bin
+
 ```shell
 #!/bin/bash
 #1 获取输入参数个数，如果没有参数，直接退出
@@ -20,7 +23,7 @@ echo pdir=$pdir
 user=`whoami`
 
 #5 循环
-for((host=103; host<105; host++)); do
+for((host=1; host<4; host++)); do
         echo ------------------- hadoop$host --------------
         rsync -rvl $pdir/$fname $user@hadoop$host:$pdir
 done

@@ -11,6 +11,7 @@
     <modules>
         <module>eshop-mock</module>
         <module>flume-Interceptor</module>
+        <module>eshop-hivefunction</module>
     </modules>
 
 
