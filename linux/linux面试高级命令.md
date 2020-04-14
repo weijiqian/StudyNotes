@@ -10,12 +10,3 @@ Linux常用命令
 | 6    | uptime                        | 查看报告系统运行时长及平均负载         |
 | 7    | ps  aux                       | 查看进程                               |
 
-Shell常用工具
-
-awk
-
-sed
-
-cut
-
-sort

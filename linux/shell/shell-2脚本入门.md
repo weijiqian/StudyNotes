@@ -48,7 +48,8 @@ Helloworld
 执行脚本
 
 ```shell
-[atguigu@hadoop101 datas]$ chmod 777 helloworld.sh
+[atguigu@hadoop101 datas]$ ./helloworld.sh 
+Helloworld
 ```
 
 ```shell
