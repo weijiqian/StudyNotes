@@ -16,7 +16,7 @@
 
 
 
-![img](/Users/weijiqian/Desktop/大数据/StudyNotes/spark/image/70.png)
+![img](../../spark/image/70.png)
 
 
 
