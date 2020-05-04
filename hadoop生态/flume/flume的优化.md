@@ -1,0 +1,21 @@
+Flume经常被用在生产环境中收集后端产生的日志，一个Flume进程就是一个Agent，要充分发挥Flume的性能最主要的是要调好Flume的配置参数。
+
+Flume agent配置分为三个部分：Source、Channel、Sink。
+
+**1、Source**
+
+（1）增加Source个数（使用tairDirSource时可增加filegroups个数）可以增大Source读取数据的能力。例如：当某一个目录产生的文件过多时需要将这个文件目录拆分成多个文件目录，同时配置好多个Source以保证Source有足够的能力获取到新产生的数据。
+
+（2）batchSize参数决定Source一次批量传输到Channel的event条数，适当调大这个参数可以提高Source搬运Event到Channel时的性能。
+
+**2、Channel** 
+
+（1）type选择memory时Channel的性能最好，但是如果Flume进程意外挂掉可能会丢失数据；type选择file时Channel的容错性更好，但是性能上会比memory channel差。使用file Channel时dataDirs配置多个不同盘下的目录可以提高性能。
+
+（2）capacity参数决定Channel可容纳最大的event条数；transactionCapacity参数决定每次Source往channel里面写的最大event条数和每次Sink从channel里面读的最大event条数；transactionCapacity需要大于Source和Sink的batchSize参数；byteCapacity是Channel的内存大小，单位是byte。 
+
+**3、Sink** 
+
+（1）增加Sink的个数可以增加Sink消费event的能力。当然Sink也不是越多越好，够用就行，过多的Sink会占用系统资源，造成系统资源不必要的浪费。
+
+（2）batchSize参数决定Sink一次批量从Channel读取的event条数，适当调大这个参数可以提高Sink从Channel搬出event的性能。

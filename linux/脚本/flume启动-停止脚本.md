@@ -4,7 +4,7 @@ flume.sh
 使用: 启动  flume.sh start
     停止   flume.sh stop
 
-```sbtshell
+```shell
 #! /bin/bash
 
 case $1 in
@@ -25,3 +25,4 @@ case $1 in
 };;
 esac
 ```
+
