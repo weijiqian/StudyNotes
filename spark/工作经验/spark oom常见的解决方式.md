@@ -80,8 +80,14 @@ shuffle后内存溢出：
 3.reduce task向Driver中的MapOutputTracker获取shuffle file位置的时候出现了问题
 解决方法：
 1.增大Executor内存(即堆内内存) ，申请的堆外内存也会随之增加--executor-memory 5G
-2.增大堆外内存 --conf spark.yarn.executor.memoryoverhead 2048M
+2.增大堆外内存
+
+```
+--conf spark.yarn.executor.memoryoverhead 2048M
 --conf spark.executor.memoryoverhead 2048M
+```
+
+
 (默认申请的堆外内存是Executor内存的10%，真正处理大数据的时候，这里都会出现问题，导致spark作业反复崩溃，无法运行；此时就会去调节这个参数，到至少1G（1024M），甚至说2G、4G）
 
 注:在shuffle过程中可调的参数：
@@ -102,9 +108,12 @@ spark.reducer.maxSizeInFlight
 ##### 错误：reduce oom
 
 reduce task去map拉数据，reduce 一边拉数据一边聚合 reduce段有一块聚合内存（executor memory * 0.2）
-解决办法：1、增加reduce 聚合的内存的比例 设置spark.shuffle.memoryFraction
+解决办法：
+
+1、增加reduce 聚合的内存的比例 设置spark.shuffle.memoryFraction
 2、 增加executor memory的大小 --executor-memory 5G
 3、减少reduce task每次拉取的数据量 设置spark.reducer.maxSizeInFlight 24m
+
 ```
 spark.shuffle.io.maxRetries
 默认值：3

@@ -36,4 +36,4 @@ set mapred.output.compression.codec=org.apache.hadoop.io.compress.SnappyCodec
 
 
 
-常用orc + snappy
+### 常用orc + snappy

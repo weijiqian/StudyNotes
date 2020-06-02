@@ -132,7 +132,75 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 
 
+#### CAS  比较交换
+
+CAS的全称是Compare And Swap 即比较交换
+
+```
+执行函数：CAS(V,E,N)
+V表示要更新的变量
+
+E表示预期值(V的原始值)
+
+N表示新值
+
+例子:
+a=5;
+线程1:把a改为6;
+线程2:把a改为10;
+
+线程1拿到变量a,原始值为5,准备更改a的值,此时,线程切换.
+线程2开始执行,拿到变量a,原始值为5,此时,线程切换.
+线程1执行,预期值为5,实际值为5,于是把a改为6,结束.线程切换
+线程2执行,预期值为5,实际值为6,更改失败,结束.
+在不加锁的情况下,安全的更改变量的值.
+
+CAS 会出现ABA 问题.
+```
+
+
+
+
+
 作者：jijs
 链接：https://www.jianshu.com/p/d10256f0ebea
 来源：简书
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+### get操作不加锁的原因
+
+#### get没有加锁的话，ConcurrentHashMap是如何保证读到的数据不是脏数据的呢？
+
+```java
+static class Node<K,V> implements Map.Entry<K,V> {
+    final int hash;
+    final K key;
+    //可以看到这些都用了volatile修饰
+    volatile V val;
+    volatile Node<K,V> next;
+
+    Node(int hash, K key, V val, Node<K,V> next) {
+        this.hash = hash;
+        this.key = key;
+        this.val = val;
+        this.next = next;
+    }
+
+```
+
+因为  volatile
+
+**Java提供了volatile关键字来保证可见性、有序性。但不保证原子性**
+
+```
+为什么有 volatile?
+对于可见性，Java提供了volatile关键字来保证可见性、有序性。但不保证原子性。
+普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原来的旧值，因此无法保证可见性。
+```
+
+volatile的作用
+
+- **总结下来**：
+- 第一：使用volatile关键字会强制将修改的值立即写入主存；
+- 第二：使用volatile关键字的话，当线程2进行修改时，会导致线程1的工作内存中缓存变量的缓存行无效（反映到硬件层的话，就是CPU的L1或者L2缓存中对应的缓存行无效）；
+- 第三：由于线程1的工作内存中缓存变量的缓存行无效，所以线程1再次读取变量的值时会去主存读取。

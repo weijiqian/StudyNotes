@@ -1,4 +1,4 @@
-mysql_to_hdfs.sh
+### mysql_to_hdfs.sh
 
 ```shell
 #! /bin/bash
@@ -185,3 +185,54 @@ esac
 [atguigu@hadoop102 bin]$ mysql_to_hdfs.sh all 2020-03-11
 ```
 
+
+
+###  sqoop_export.sh
+
+```shell
+#!/bin/bash
+hive_db_name=gmall
+mysql_db_name=gmall_report
+export_data() {
+/opt/module/sqoop/bin/sqoop export \
+--connect
+"jdbc:mysql://hadoop102:3306/${mysql_db_name}?useUnicode=true&
+characterEncoding=utf-8" \
+--username root \ --password 000000 \
+--table $1 \  #mysql表名
+--num-mappers 1 \
+--export-dir /warehouse/$hive_db_name/ads/$1 \ # 导出目录
+--input-fields-terminated-by "\t" \ 
+--update-mode allowinsert \
+--update-key $2 \  #更新字段
+--input-null-string '\\N' \
+--input-null-non-string '\\N'
+}
+case $1 in
+"ads_uv_count")
+export_data "ads_uv_count" "dt"
+;;
+"ads_user_action_convert_day")
+export_data "ads_user_action_convert_day" "dt"
+;;
+"ads_user_topic")
+export_data "ads_user_topic" "dt"
+;;
+"all")
+export_data "ads_uv_count" "dt"
+export_data "ads_user_action_convert_day" "dt"
+export_data "ads_user_topic" "dt"
+;;
+esac
+```
+
+```
+关于导出 update 还是 insert 的问题 
+ --update-mode:
+		updateonly 只更新，无法插入新数据 allowinsert 允许新增
+ --update-key:允许更新的情况下，指定哪些字段匹配视为同一条数据，进行更新 而不增加。多个字段用逗号分隔。
+
+ --input-null-string和--input-null-non-string: 分别表示，将字符串列和非字符串列的空串和“null”转义。
+```
+
+一张表 一个job,出问题时,好找.

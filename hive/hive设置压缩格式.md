@@ -4,7 +4,7 @@
 
 ```shell
 set hive.exec.compress.intermediate=true --启用中间数据压缩
-SET hive.exec.compress.output=true; -- 启用最终数据输出压缩
+set hive.exec.compress.output=true; -- 启用最终数据输出压缩
 set mapreduce.output.fileoutputformat.compress=true; --启用reduce输出压缩
 set mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compress.SnappyCodec --设置reduce输出压缩格式
 set mapreduce.map.output.compress=true; --启用map输入压缩
