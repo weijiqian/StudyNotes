@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <profile name="Maven 1" modules="ContentRecommender,DataLoader,ECrecommender,HotItemsAnalysis,LoginFailDetect,MarketAnalysis,NetworkFlowAnalysis,OfflineRecommender,OrderPayDetect,StatisticsRecommender,StreamingRecommender,UserBehaviorAnalysis,analyse,atguigu-spark-commerce,common,flink-study,mock,spark-study" />
+  </component>
+</project>

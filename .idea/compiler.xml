@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="analyse" />
+        <module name="businessServer" />
+        <module name="common" />
+        <module name="ContentRecommender" />
+        <module name="DataLoader" />
+        <module name="ECrecommender" />
+        <module name="ElasticSearch-code" />
+        <module name="eshophivefunction" />
+        <module name="eshopmock" />
+        <module name="flink-study" />
+        <module name="flumeInterceptor" />
+        <module name="HotItemsAnalysis" />
+        <module name="KafkaStream" />
+        <module name="LeetCode" />
+        <module name="LoginFailDetect" />
+        <module name="MarketAnalysis" />
+        <module name="mock" />
+        <module name="NetworkFlowAnalysis" />
+        <module name="OfflineRecommender" />
+        <module name="OrderPayDetect" />
+        <module name="spark-study" />
+        <module name="StatisticsRecommender" />
+        <module name="StreamingRecommender" />
+        <module name="UserBehaviorAnalysis" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="analyse" target="1.8" />
+      <module name="atguigu-ECommerceRecommendSystem" target="1.8" />
+      <module name="atguigu-MovieRecommendSystem" target="1.8" />
+      <module name="atguigu-spark-commerce" target="1.8" />
+      <module name="businessServer" target="1.8" />
+      <module name="common" target="1.8" />
+      <module name="ContentRecommender" target="1.8" />
+      <module name="DataLoader" target="1.8" />
+      <module name="ECrecommender" target="1.8" />
+      <module name="ElasticSearch-code" target="1.8" />
+      <module name="eshopdatabase" target="1.5" />
+      <module name="eshophivefunction" target="1.8" />
+      <module name="eshopmock" target="1.8" />
+      <module name="flink-study" target="1.5" />
+      <module name="flumeInterceptor" target="1.8" />
+      <module name="HotItemsAnalysis" target="1.5" />
+      <module name="KafkaStream" target="1.8" />
+      <module name="LeetCode" target="1.8" />
+      <module name="LoginFailDetect" target="1.5" />
+      <module name="MarketAnalysis" target="1.5" />
+      <module name="mock" target="1.8" />
+      <module name="NetworkFlowAnalysis" target="1.5" />
+      <module name="OfflineRecommender" target="1.8" />
+      <module name="OrderPayDetect" target="1.5" />
+      <module name="recommender" target="1.8" />
+      <module name="spark-study" target="8" />
+      <module name="StatisticsRecommender" target="1.8" />
+      <module name="StreamingRecommender" target="1.8" />
+      <module name="UserBehaviorAnalysis" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

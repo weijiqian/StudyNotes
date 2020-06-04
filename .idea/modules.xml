@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/ContentRecommender/ContentRecommender.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/ContentRecommender/ContentRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/DataLoader/DataLoader.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/DataLoader/DataLoader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-ECommerceRecommendSystem/ECrecommender/ECrecommender.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-ECommerceRecommendSystem/ECrecommender/ECrecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java常用工具和环境/ElasticSearch/ElasticSearch-code/ElasticSearch-code.iml" filepath="$PROJECT_DIR$/java常用工具和环境/ElasticSearch/ElasticSearch-code/ElasticSearch-code.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/HotItemsAnalysis/HotItemsAnalysis.iml" filepath="$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/HotItemsAnalysis/HotItemsAnalysis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/KafkaStream/KafkaStream.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/KafkaStream/KafkaStream.iml" />
+      <module fileurl="file://$PROJECT_DIR$/数据结构与算法/LeetCode/LeetCode.iml" filepath="$PROJECT_DIR$/数据结构与算法/LeetCode/LeetCode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/LoginFailDetect/LoginFailDetect.iml" filepath="$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/LoginFailDetect/LoginFailDetect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/MarketAnalysis/MarketAnalysis.iml" filepath="$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/MarketAnalysis/MarketAnalysis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/NetworkFlowAnalysis/NetworkFlowAnalysis.iml" filepath="$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/NetworkFlowAnalysis/NetworkFlowAnalysis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/OfflineRecommender/OfflineRecommender.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/OfflineRecommender/OfflineRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/OrderPayDetect/OrderPayDetect.iml" filepath="$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/OrderPayDetect/OrderPayDetect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/StatisticsRecommender/StatisticsRecommender.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/StatisticsRecommender/StatisticsRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/StreamingRecommender/StreamingRecommender.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/StreamingRecommender/StreamingRecommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/StudyNotes.iml" filepath="$PROJECT_DIR$/.idea/StudyNotes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/UserBehaviorAnalysis.iml" filepath="$PROJECT_DIR$/flink生态/UserBehaviorAnalysis/UserBehaviorAnalysis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/analyse/analyse.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/analyse/analyse.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-ECommerceRecommendSystem/atguigu-ECommerceRecommendSystem.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-ECommerceRecommendSystem/atguigu-ECommerceRecommendSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/atguigu-MovieRecommendSystem.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/atguigu-MovieRecommendSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/atguigu-spark-commerce.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/atguigu-spark-commerce.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/businessServer/businessServer.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/businessServer/businessServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/common/common.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/爬虫/crawler-project/crawler-project.iml" filepath="$PROJECT_DIR$/爬虫/crawler-project/crawler-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-eshop-database/eshopdatabase.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-eshop-database/eshopdatabase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-eshop-database/eshop-hivefunction/eshophivefunction.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-eshop-database/eshop-hivefunction/eshophivefunction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-eshop-database/eshop-mock/eshopmock.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-eshop-database/eshop-mock/eshopmock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/python/example/example.iml" filepath="$PROJECT_DIR$/python/example/example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flink生态/flink-study/flink-study.iml" filepath="$PROJECT_DIR$/flink生态/flink-study/flink-study.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-eshop-database/flume-Interceptor/flumeInterceptor.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-eshop-database/flume-Interceptor/flumeInterceptor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/mock/mock.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-spark-commerce/mock/mock.iml" />
+      <module fileurl="file://$PROJECT_DIR$/python/pythoncode/pythoncode.iml" filepath="$PROJECT_DIR$/python/pythoncode/pythoncode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/recommender.iml" filepath="$PROJECT_DIR$/大数据项目/atguigu-MovieRecommendSystem/recommender/recommender.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scala/code/scalacode.iml" filepath="$PROJECT_DIR$/scala/code/scalacode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spark/spark-study/spark-study.iml" filepath="$PROJECT_DIR$/spark/spark-study/spark-study.iml" />
+    </modules>
+  </component>
+</project>

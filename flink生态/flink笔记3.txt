@@ -1,0 +1,501 @@
+特殊的日子：
+
+	最后一周的第一天：
+
+	周四周五周一：flink
+	周二-周五：ML
+
+今天的内容：
+
+	关于flink：
+
+	1、原理
+	2、四大特性
+
+	3、Spark串讲
+	4、简历
+
+
+flink过程中：
+
+	第三天；
+
+	前两天的内容：
+
+	1、基础理论
+
+		思路分析
+
+		流式处理  ： 延迟
+		离线处理  ： 吞吐
+
+		核心术语
+
+			有界数据集 离线数据 静态数据
+			无界数据集 流式数据 动态数据
+
+			离线批处理架构
+				flume + hdfs + mapreduce + hbase + hive + sqoop + mysql
+
+			实时流式处理架构
+				flume + kafka + storm/spark streaming/flink + hbase/mysql/redis
+
+				以上两种架构的应用程序都是运行在一个资源调度系统之上：YARN
+
+			不管是那种架构，都会有各种辅助开发工具：
+
+				项目构建工具
+				代码版本工具
+				代码规范检查工具
+				任务调度
+				.....
+
+		关于四大计算引擎的介绍：
+
+			mapreduce
+				批处理
+
+			storm
+				流式处理
+
+			spark 
+				流式 + 批  处理
+				基于批处理的核心思路来进行设计
+
+			flink
+				流式 + 批  处理
+				基于流式处理的核心思路来进行设计
+
+		
+		Spark的各种介绍
+		
+			Spark streaming和flink的对比分析
+
+			官网：
+				四个部分：
+
+				1、左边的菜单
+				2、标题
+					stateful computation over data stream
+				3、一张图
+					数据输入源
+					计算架构
+					数据目的地
+				4、六大优势分析
+
+		what is apache Flink?
+
+			Architecture
+			Applications 
+			Operations
+
+		flink的集群架构：
+
+			client
+
+			JobManager
+			TaskManager
+
+			ZooKeeper
+
+		
+		集群环境的安装
+
+			集群规划和准备
+			版本选择
+			依赖环境准备
+				zookeeper  hdfs  jdk
+			flink集群安装
+				1、下载
+				2、规划安装
+				3、修改配置文件
+				4、分发 + 配置环境变量
+				5、启动和检查
+					jps
+					web ui
+					运行示例程序
+
+
+
+	2、编程API 
+
+		四层API :
+
+			SQL 
+			Table API
+			DataSet & DataStream API
+			ProcessFunction
+		
+
+		重点：
+			SQL 
+			Table API
+			DataSet & DataStream API
+		
+		核心：
+			DataSet & DataStream API
+
+		
+		DataSet 
+			抽象离线数据集
+		
+		DataStream 
+			抽象流式数据
+
+		
+		wordcount + 核心编程套路 + scala/java
+
+
+	最重要的是编程套路：
+
+		1、获取编程入口：
+			spark： 
+				sparkContext
+				sqlContext/hiveContext
+				streamingContext
+
+				sparkSession
+			flink:
+				ExecutionEnvironment
+				StreamExecutionEnvironment
+				TableEnvironment
+
+		2、加载数据 得到初始的数据抽象对象
+			spark：
+				RDD 普通数据集
+				DataFrame 关系型数据表 ====>  RDD + schema
+				DStream 流式数据抽象
+				DataSet
+			flink
+				DataSet 离线
+				DataStream 流式
+
+			加载数据：
+				不管是flink还是spark，都能加载常见的各种数据源中的各种数据格式
+
+				spark:
+					sparkContext.textFile()
+				flink:
+					env.readTextFile(....)
+					env.readCsvFile(....)
+		
+		3、针对数据抽象对象，调用对应的算子执行计算
+
+			spark：
+				transformation + action
+				宽依赖 + 窄依赖
+
+				DAG 有向无环图
+
+			flink:
+				operator
+
+				JobGraph 基于Streaming Data的一个 DataFlow
+					点：operator(里面包含很多想同类型的：subtask)
+					边：数据流分区
+
+		4、针对结果集进行处理
+
+			不管是flink还是spark，都能把数据存储到对应的常见存储系统
+			成为对应的各种常见格式
+
+				输出：
+				spark:
+					spark.write.mode().csv()
+
+				flink:
+					dataSet.writeAsCsv()
+				
+		5、收尾操作
+
+			触发任务执行：延迟计算
+
+			spark：
+				指定一个action算子来触发执行
+
+				sparkContext.stop()
+			
+			flink：
+				针对print不用execute
+				针对带有sink组件的操作要执行execute方法（action）
+
+		
+		flink的应用程序：
+
+		三个部分：
+
+			source			加载数据源
+			transformation		计算逻辑定义
+			sink			输出数据
+
+		
+		常见的source:
+
+			1、从本地集合
+				env.fromElements(1,2,3,4)
+				env.fromCollection(Seq(1,2,3,4))
+			2、从文件
+				env.readCsvFile(filePath)
+				env.createInput(InputFormat)
+			3、从网络端口
+				streamEnv.socketTextStream(hostnaem, port)
+			4、自定义数据源
+
+		transformation：
+
+			flatMap map filter ....
+			aggregation(max, count, min, sum, ...)
+			groupBy(针对DataSet) keyBy(针对DataStream)
+			一堆特殊的：
+				split
+				project
+				select
+				...
+
+		sink:
+			
+			1、直接打印输出
+				print
+
+			2、输出到文件系统
+				file:///
+				hdfs://
+			
+			3、自定义输出
+
+			额外补充一个：
+				可以输出到一个网络端口
+
+	
+		Table API
+
+			DSL
+			SQL
+
+			怎么获取环境对象？
+
+			val dataSet/dataStream = Stream/ExecutionEnvironment.getExecutionEnvironment
+			val tableEnvTable.getExecutionEnvironment
+
+			怎么加载数据得到一个Table对象
+
+			1、从dataset
+				
+				tableEnv.fromDataSet()
+				tableEnv.registerDataSet()
+				tableEnv.registerTableSource()
+
+			2、从datastream
+
+				tableEnv.fromDataStream()
+				tableEnv.registerDataStream()
+				tableEnv.registerTableSource()
+
+		
+			怎么操作table对象呢？
+
+				两种风格：
+
+				1、DSL
+					
+					student:
+					id,name,sex,age,department
+					需求：统计每个部门多少人？
+
+					department,count
+					cs,1
+					as,1
+					
+					resultTable.groupBy(4).select("count(id) as total")
+					resultTable.groupBy(0).select('id.count as total)
+
+				2、SQL
+
+					val table = tableEnv.sqlQuery(sql)
+
+
+
+
+现在开始：
+	
+
+	flink的一些实现细节和原理相关
+
+
+两个分类：
+
+1、flink的架构分析
+
+	standalone:
+
+	YARN；
+		resourcemanager
+		nodemanager
+	
+	mareduce v1:
+		jobtracker
+		tasktracker
+
+	spark：
+		master
+		worker
+	
+	flink
+		jobmanager
+		taskmanager
+	
+	以上这些集群都是属于管理资源和分配资源给对应的提交的应用程序执行的
+
+	所有的主节点都是：（管理者）
+		管理所有从节点的状态
+		分配对应的资源给应用程序去执行
+	
+	所有的从节点都是：（工作者）
+		提供资源，然后汇报自己的状态给主节点
+		派发任务下来，由每个从节点执行
+		
+
+		主管资源	Resouce...
+		主管调度	Scheduler
+		关于主控程序管理相关
+			ApplicationMaster
+		....
+
+	
+	hadoop能否被取代？
+
+		hdfs
+		yarn
+			mapreduce 太慢，功能上有一定的缺陷
+				执行效率低，编码复杂，只能做离线批处理
+
+			hive-2.x
+				mapreduce
+				tez
+				spark
+
+	一个分布式计算引擎是一定要去考虑shuffle的
+	但是不是说，所有的应程序都一定会要进行shuffle
+
+
+	spark各模块的依赖关系：
+		spark core:  核心实现
+		sparksql： 处理结构化数据， 基于spark core
+		sparkstreaming: 构建流式应用程序，基于spark core
+		structured streaming: 构建流式应用程序，基于spark sql
+
+
+
+	YARN：
+		资源单位：container  默认1G
+
+	Flink
+		资源单位：slot	
+			根据两个因素来决定slot的内存多大：
+
+			一个taskamanager的内存：a
+			一个taskmanager的slot数量： b
+
+			一个slot的内存：  a/b
+
+				由每隔slot占用多少内存来倒推应该设置a和b是多少
+
+				64G   8G内操作系统
+				 4G 其他程序
+
+				 52G： 
+				 	每个slot： 1G内存
+					taskManager 的slot数量：  52个
+					、
+	
+	ChainOperator
+
+		backend
+		pressure
+
+			反压
+
+	JobGraph
+
+2、flink的四大特性
+
+	flink：有状态的分布式计算引擎
+
+	checpoint
+		保存状态 到 HDFS
+		分布式快照
+			snapshot id  管理者：jobmanager去管理
+		barriers 屏障
+
+	state
+		ValueState
+		ListState
+		MapState
+		快照
+
+	window
+
+		滚动窗口： 没有数据被重复消费
+			每隔4s钟统计过去4s内数据的xx结果
+		滑动窗口
+			每隔4s钟统计过去6s内数据的xx结果
+		会话窗口
+			碰到有相邻两条数据超过指定的某个时间差距，就切开形成两个不同的会话
+
+		时间 time
+		数量 count
+
+		spark窗口计算的重点：
+
+			基于时间的滑动窗口
+
+			需求：
+				每隔4s钟统计过去6s内数据的xx结果
+
+				new StreamingContext(2s)
+				window(windowTime, slideTime)
+				      6                4
+
+		车流量
+
+	time
+
+		event time		事件时刻：当前这个日志生成的时刻
+		ingest time	        进入flink应用程序的时刻
+		process time		计算的时刻
+
+		
+		watermark
+			水位线
+
+			主要用来计算无序的，延迟抵达的数据
+
+
+
+	aggregateByKey(状态)((旧状态,值) => 新状态, (状态,状态) => 状态)
+	aggregateByKey(C)((C,V) => C, (C,C) => C)
+
+
+	state
+
+		窗口计算
+
+		updateStateByKey 
+
+		window
+
+
+		ValueState	存储一个值
+		ListState	存储一堆值
+		MapState	存储一堆key-vlaue类型的值
+
+
+
+	服务降级：
+
+		at least once
+
+
+
+spark串讲
+简历
